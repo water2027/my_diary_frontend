@@ -1,4 +1,4 @@
-
+import type { Examiner } from "../model";
 export interface Diary {
     diaryId: number;
     userId: number;
@@ -9,10 +9,20 @@ export interface Diary {
     isPublic: boolean;
 }
 
-export interface CreateDiaryRequest {
+export class CreateDiaryRequest implements Examiner {
     title: string;
     content: string;
     isPublic: boolean;
+    constructor(title: string, content: string, isPublic: boolean) {
+        this.title = title;
+        this.content = content;
+        this.isPublic = isPublic;
+    }
+    Examine(): boolean {
+        const newTitle = this.title.replace(/\s+/g, "");
+        const newContent = this.content.replace(/\s+/g, "");
+        return newTitle !== "" && newContent !== "";
+    }
 }
 
 export type CreateDiaryResponse = null;
@@ -47,11 +57,22 @@ export interface GetDiaryListResponse {
     diaries: Diary[];
 }
 
-export interface UpdateDiaryRequest {
+export class UpdateDiaryRequest implements Examiner {
     diaryId: number;
     title: string;
     content: string;
     isPublic: boolean;
+    constructor(diaryId: number, title: string, content: string, isPublic: boolean) {
+        this.diaryId = diaryId;
+        this.title = title;
+        this.content = content;
+        this.isPublic = isPublic;
+    }
+    Examine(): boolean {
+        const newTitle = this.title.replace(/\s+/g, "");
+        const newContent = this.content.replace(/\s+/g, "");
+        return newTitle !== "" && newContent !== "";
+    }
 }
 
 export type UpdateDiaryResponse = null;

@@ -3,8 +3,14 @@ import type { Ref } from 'vue'
 
 import { getToken } from './auth'
 
+enum Code {
+  Fail = 0,
+  Unauthorized = 1,
+  Success = 100,
+}
+
 export interface Response<T> {
-  code: number
+  code: Code
   data: T
   message: string
 }
@@ -68,12 +74,11 @@ class RequestHandler {
     fetch(url, requestInit)
       .then((response) => response.json())
       .then((res) => {
-        if (isResponse<T>(res)) {
-          this.codeHandler(res.code)
-          data.value = res.data
-        } else {
+        if (!isResponse<T>(res)) {
           throw new Error('0')
-        }
+        } 
+        this.codeHandler(res.code)
+        data.value = res.data
       })
       .catch((error) => {
         console.error(error)
@@ -89,15 +94,21 @@ class RequestHandler {
     } as Result<T>
   }
 
-  private codeHandler(code: number) {
+  private codeHandler(code: Code) {
     switch (code) {
+      case 0: {
+        throw new Error('fail')
+      }
       case 1: {
         // TODO: 重新登录
         console.log('未登录')
         break
       }
-      default: {
+      case 100 :{
         break
+      }
+      default: {
+        throw new Error('后端改了前端没改')
       }
     }
   }
