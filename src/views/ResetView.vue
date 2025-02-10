@@ -74,6 +74,7 @@ const sendVCode = async () => {
       <router-link to="/auth/login">没忘记</router-link>
     </div>
     <button
+      type="button"
       @click="sendVCode"
       class="w-full h-10 bg-[#eb6b26] text-white border-0 text-lg cursor-pointer mt-5 rounded-[20px] flex justify-center items-center hover:bg-[#ff7e3b] disabled:bg-zinc-600"
     >

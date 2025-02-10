@@ -58,7 +58,16 @@ class RequestHandler {
     isAsync: boolean = true,
   ): Promise<T> | Result<T> {
     if (isAsync) {
-      return fetch(url, requestInit)
+      return fetch(url, {
+        // requestInit
+        headers:{
+          ...requestInit.headers,
+          
+        },
+        method:requestInit.method,
+        mode:'cors',
+        body:requestInit.body
+      })
         .then((response) => response.json())
         .then((data) => {
           if (isResponse<T>(data)) {
